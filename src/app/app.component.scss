@@ -1,0 +1,12 @@
+.items-checked-in-for-inspection, .send-to-manufacturer{
+    padding: 20px;
+    background: grey;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.wrapper{
+    display:flex;   
+    gap: 40px;
+}

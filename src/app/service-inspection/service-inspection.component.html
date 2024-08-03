@@ -1,0 +1,11 @@
+<div *ngIf="form">
+    <div class="inspection-wrapper" [formGroup]="form">
+      <div *ngFor="let itemControl of inspectionItemControls.controls; let i = index">
+        <app-service-inspection-item
+          [itemForm]="getServiceInspectionItemForm(i)"
+          [isViewOnly]="isViewOnly"
+        ></app-service-inspection-item>
+      </div>
+    </div>
+</div>
+  

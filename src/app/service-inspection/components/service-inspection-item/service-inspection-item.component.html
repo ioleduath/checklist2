@@ -1,0 +1,76 @@
+<div [formGroup]="itemForm">
+  <div
+    class="expansion-panel"
+    [ngClass]="
+      itemForm.get('errorCode')?.value === errorCode.NonCompliant
+        ? 'active'
+        : ''
+    "
+  >
+    <div>
+      <div class="header-content">
+        <div class="header">
+          <h3>{{ itemForm.get('label')?.value }}</h3>
+          <div
+            [ngClass]="
+              itemForm.get('errorCode')?.value === errorCode.NonCompliant
+                ? 'ok-button'
+                : 'fault-button'
+            "
+            class="button-group-wrapper"
+          >
+            <div class="button-group">
+              <label>
+                <input
+                  type="radio"
+                  [value]="errorCode.Compliant"
+                  formControlName="errorCode"
+                />
+                Compliant
+              </label>
+              <label>
+                <input
+                  type="radio"
+                  [value]="errorCode.NonCompliant"
+                  formControlName="errorCode"
+                />
+                Non-Compliant
+              </label>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      class="content"
+      [ngClass]="
+        itemForm.get('errorCode')?.value === errorCode.NonCompliant
+          ? 'show'
+          : 'hide'
+      "
+    >
+      <div
+        [ngClass]="
+          itemForm.hasError('atLeastOneCauseSelected')
+            ? 'show-error'
+            : 'hide-error'
+        "
+        class="error"
+      >
+        <i class="fas fa-exclamation"></i>
+        <div>At least one cause needs to be selected for non-compliance.</div>
+      </div>
+      <div class="causes-wrapper" formArrayName="causes">
+        <ng-container
+          class="cause-top-wrapper"
+          *ngFor="let causeControl of causeControls.controls; let i = index"
+        >
+          <app-service-inspection-cause
+            [causeForm]="getCauseForm(i)"
+            [isViewOnly]="isViewOnly"
+          ></app-service-inspection-cause>
+        </ng-container>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,75 @@
+<div class="dialog-wrapper">
+  <div class="dialog-top">
+    <div class="header-section">
+      <h3>Service Inspection</h3>
+      <h4>{{ data?.vehicleType }}</h4>
+      <h5>{{ vehicleTypeDisplayNameMap.get(data?.vinNumber) }}</h5>
+    </div>
+  </div>
+  <div class="inspection-view">
+    <form>
+      <app-service-inspection
+        [inspectionItems]="data.cachedItems"
+        [inspectionItemCauses]="data.cachedCauses"
+        [currentServiceFailures]="data.failuresOnItem"
+        [isViewOnly]="isViewOnly"
+        (hasUrgentError)="getHasUrgentError($event)"
+        (formReady)="onFormReady($event)"
+      ></app-service-inspection>
+    </form>
+  </div>
+  <div class="bottom-form-section">
+    <div class="button-group">
+      <div
+        *ngIf="!newServiceInspectionForm.valid && shouldShowErrors"
+        class="notification faults-present-message"
+      >
+        <div>Resolve all inspection errors before submitting.</div>
+      </div>
+      <div
+        *ngIf="
+          hasUrgentError &&
+          shouldShowErrors &&
+          serviceActionType.None === serviceAction
+        "
+        class="urgent-error-acknowledgement notification"
+      >
+        <span>Urgent errors detected—item must be sent to manufacturer.</span>
+      </div>
+
+      <div class="service-action-options" [ngClass]="hasUrgentError && shouldShowErrors && serviceActionType.None === serviceAction ? 'error-state' : ''">
+        <label>
+          <input
+            type="radio"
+            name="serviceAction"
+            value="None"
+            (click)="changeServiceAction(serviceActionType.None)"
+            [checked]="serviceActionType.None === serviceAction"
+          />
+          Service On-Site
+        </label>
+        <label>
+          <input
+            type="radio"
+            name="serviceAction"
+            value="SendToManufacturer"
+            (click)="changeServiceAction(serviceActionType.SendToManufacturer)"
+            [checked]="serviceActionType.SendToManufacturer === serviceAction"
+          />
+          Send to Manufacturer
+        </label>
+      </div>
+    </div>
+  </div>
+
+  <div class="dialog-bottom">
+    <div class="dialog-submission action-buttons">
+      <button class="action-button secondary">
+        Cancel
+      </button>
+      <button class="action-button primary" (click)="onSubmitForm()">
+        Save
+      </button>
+    </div>
+  </div>
+</div>

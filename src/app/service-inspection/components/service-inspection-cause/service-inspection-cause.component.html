@@ -1,0 +1,40 @@
+<ng-container class="main-form-cause" [formGroup]="causeForm">
+    <label
+      [ngClass]="
+        causeForm.get('isChecked')?.value
+          ? 'checkbox-selected'
+          : 'checkbox-unselected'
+      "
+      class="cause-checkbox"
+    >
+      <div>
+        <input
+          type="checkbox"
+          [disabled]="isViewOnly"
+          formControlName="isChecked"
+        />
+        {{ causeForm.get('description')?.value }}
+      </div>
+    </label>
+    <div
+      class="manual-cause-textbox"
+      *ngIf="
+        causeForm.get('id')?.value === 'other' &&
+        causeForm.get('isChecked')?.value
+      "
+    >
+      <input
+        type="text"
+        [disabled]="isViewOnly"
+        formControlName="manualCause"
+        required
+      />
+      <div
+        *ngIf="causeForm.hasError('noManualCauseGivenForOther')"
+        class="error"
+      >
+        Cause description is required.
+      </div>
+    </div>
+  </ng-container>
+  

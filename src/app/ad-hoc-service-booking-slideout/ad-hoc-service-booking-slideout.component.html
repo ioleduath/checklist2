@@ -1,0 +1,82 @@
+<div class="dialog-wrapper">
+    <div class="dialog-top">
+      <div class="header-section">
+        <div class="form-group">
+          <label for="vehicle-type">Vehicle Type</label>
+          <select
+            id="vehicle-type"
+            [disabled]="vehicleTypeDisabled"
+            [formControl]="vehicleTypeFormControl"
+            (change)="updateVehicleType()"
+          >
+            <option
+              *ngFor="let vehicle of vehicleTypeFilterDropdownData"
+              [value]="vehicle.id"
+            >
+              {{ vehicle.name }}
+            </option>
+          </select>
+        </div>
+      </div>
+    </div>
+    <div class="header-section">
+      <div class="ad-hoc-service-booking-heading headings">
+        <div class="form-group">
+          <label for="location">Location</label>
+          <select
+            id="location"
+            [disabled]="selectLocationDisabled"
+            [formControl]="locationFormControl"
+            (change)="updateLocation()"
+          >
+            <option
+              *ngFor="let location of locationFilterDropdownData"
+              [value]="location.id"
+            >
+              {{ location.name }}
+            </option>
+          </select>
+        </div>
+        <div class="form-group" *ngIf="locationFormControl.value && vehicleTypeFormControl.value">
+          <label for="vin">VIN</label>
+          <select
+            id="vin"
+            [formControl]="vinFormControl"
+          >
+            <option
+              *ngFor="let vin of vinFilterDropdownData"
+              [value]="vin.id"
+            >
+              {{ vin.vinNumber }}
+            </option>
+          </select>
+        </div>
+      </div>
+    </div>
+    <div class="inspection-view">
+      <form>
+        <app-service-inspection
+          *ngIf="vinFormControl.value"
+          [inspectionItems]="inspectionItems"
+          [inspectionItemCauses]="inspectionItemCauses"
+          [currentServiceFailures]="[]"
+          (formReady)="onFormReady($event)"
+        ></app-service-inspection>
+      </form>
+    </div>
+    <div class="dialog-bottom">
+      <div class="dialog-submission action-buttons">
+        <button class="action-button secondary" (click)="closeDialog()">
+          Cancel
+        </button>
+        <button
+          class="action-button primary"
+          [disabled]="!newInspectionForm?.valid"
+          (click)="onSubmitForm()"
+        >
+          Submit
+        </button>
+      </div>
+    </div>
+  </div>
+  
